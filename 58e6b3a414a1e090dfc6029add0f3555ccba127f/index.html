@@ -3,82 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vexinity Balls 99</title>
+    <title>Vexinity Games</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
             background-color: #1a1a1a;
             color: #e0e0e0;
             text-align: center;
-        }
-
-        #password-container {
-            width: 100%;
-            max-width: 400px;
             padding: 20px;
-            background-color: rgba(50, 50, 50, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
         }
 
-        #incorrect-password-container {
-            display: none;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            background-color: rgba(50, 50, 50, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-        }
-
-        #title, #incorrect-title {
-            font-size: 2rem;
-            background: linear-gradient(90deg, rgb(85, 98, 180), rgb(85, 98, 180), #1e3c72, #1e90ff, #1e3c72, rgb(85, 98, 180));
-            background-size: 300% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientText 7s linear infinite;
-        }
-
-        @keyframes gradientText {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        #password-input {
-            padding: 10px;
-            width: 100%;
-            background-color: rgba(70, 70, 70, 0.9);
-            color: #e0e0e0;
-            border: 2px solid #555;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            text-align: center;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-            font-family: 'Poppins', Arial, sans-serif;
-        }
-
-        #password-input:focus {
-            border-color: #1e90ff;
-            outline: none;
-        }
-
-        #submit-password, .button {
+        .button {
             padding: 8px 20px;
             border: none;
             background: linear-gradient(90deg, rgb(85, 98, 180), rgb(85, 98, 180), #1e3c72, #1e90ff, #1e3c72, rgb(85, 98, 180));
@@ -101,14 +38,16 @@
             100% { background-position: 0% 50%; }
         }
 
-        #submit-password:hover, .button:hover {
+        .button:hover {
             transform: scale(1.05);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
         }
 
         #button-container {
-            display: none;
             margin-top: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         #games-section {
@@ -125,6 +64,10 @@
 
         .section {
             display: none;
+        }
+
+        .section.active {
+            display: block;
         }
 
         /* Fullscreen iframe styles */
@@ -166,24 +109,24 @@
         #close-iframe:hover {
             background-color: rgba(255, 0, 0, 0.7);
         }
+
+        .nav-button {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
 
-<div id="password-container">
-    <h2 id="title">Loading...</h2>
-    <input type="password" id="password-input" placeholder="Enter your password..." />
-    <button id="submit-password">Submit</button>
-</div>
-
-<div id="incorrect-password-container">
-    <h2 id="incorrect-title">Password Incorrect</h2>
-    <p>Retry in <span id="countdown">5</span> seconds.</p>
-</div>
-
 <div id="button-container">
+    <div style="display: flex; justify-content: center; margin-bottom: 15px;">
+        <button class="button nav-button" onclick="showSection('games')">Games</button>
+        <button class="button nav-button" onclick="showSection('tools')">Tools</button>
+        <button class="button nav-button" onclick="showSection('hacks')">Hacks</button>
+        <button class="button nav-button" onclick="showSection('private')">Coming Soon</button>
+    </div>
+
     <div id="section-container">
-        <div class="section" id="games-section">
+        <div class="section active" id="games-section">
             <button class="button" onclick="loadGame('https://vexinity99.github.io/vexinity/Minecraft.html')">Minecraft</button>
             <button class="button" onclick="loadGame('https://vexinity99.github.io/vexinity/SubwaySurfers.html')">Subway Surfers</button>
             <button class="button" onclick="loadGame('https://vexinity99.github.io/vexinity/Slope.html')">Slope</button>
@@ -218,10 +161,6 @@
             <button class="button" onclick="loadGame('https://balls.com')">Nothing here yet...</button>
         </div>
     </div>
-    <button class="button" onclick="showSection('games')">Games</button>
-    <button class="button" onclick="showSection('tools')">Tools</button>
-    <button class="button" onclick="showSection('hacks')">Hacks</button>
-    <button class="button" onclick="showSection('private')">Coming soon...</button>
 </div>
 
 <!-- Fullscreen iframe container -->
@@ -231,56 +170,14 @@
 </div>
 
 <script>
-    let correctPassword = '';
-
-    fetch('https://raw.githubusercontent.com/vexinity99/vexinityAssets/refs/heads/main/password.txt')
-        .then(response => response.text())
-        .then(text => {
-            correctPassword = text.trim();
-        });
-
-    fetch('https://raw.githubusercontent.com/vexinity99/vexinityAssets/refs/heads/main/title.txt')
-        .then(response => response.text())
-        .then(titleText => {
-            document.getElementById('title').innerText = titleText.trim();
-        });
-
-    const passwordInput = document.getElementById('password-input');
-    const submitPasswordButton = document.getElementById('submit-password');
-    const passwordContainer = document.getElementById('password-container');
-    const incorrectPasswordContainer = document.getElementById('incorrect-password-container');
-    const buttonContainer = document.getElementById('button-container');
-    const countdownElement = document.getElementById('countdown');
-
-    submitPasswordButton.addEventListener('click', () => {
-        if (passwordInput.value === correctPassword) {
-            passwordContainer.style.display = 'none';
-            buttonContainer.style.display = 'block';
-        } else {
-            passwordContainer.style.display = 'none';
-            incorrectPasswordContainer.style.display = 'block';
-
-            let countdown = 5;
-            countdownElement.innerText = countdown;
-
-            const countdownInterval = setInterval(() => {
-                countdown--;
-                countdownElement.innerText = countdown;
-
-                if (countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    incorrectPasswordContainer.style.display = 'none';
-                    passwordContainer.style.display = 'block';
-                }
-            }, 1000);
-        }
-    });
-
     function showSection(section) {
-        document.getElementById('games-section').style.display = section === 'games' ? 'grid' : 'none';
-        document.getElementById('tools-section').style.display = section === 'tools' ? 'block' : 'none';
-        document.getElementById('hacks-section').style.display = section === 'hacks' ? 'block' : 'none';
-        document.getElementById('private-section').style.display = section === 'private' ? 'block' : 'none';
+        // Hide all sections
+        document.querySelectorAll('.section').forEach(sec => {
+            sec.classList.remove('active');
+        });
+        
+        // Show selected section
+        document.getElementById(section + '-section').classList.add('active');
     }
 
     // Game iframe functions
@@ -302,16 +199,9 @@
             closeGame();
         }
     });
-	
-	<script>
-  document.addEventListener('keydown', function(e) {
-    // Disable F12, Ctrl+Shift+I, and Ctrl+U
-    if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73) || (e.ctrlKey && e.keyCode === 85)) {
-      e.preventDefault();
-    }
-  });
-</script>
 
+    // Default to showing games section
+    showSection('games');
 </script>
 
 </body>
