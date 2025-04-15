@@ -1,134 +1,175 @@
-
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-<title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Protected</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            text-align: center;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        #password-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(50, 50, 50, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+        }
 
+        #incorrect-password-container {
+            display: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(50, 50, 50, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        #title, #incorrect-title {
+            font-size: 2rem;
+            background: linear-gradient(90deg, rgb(85, 98, 180), rgb(85, 98, 180), #1e3c72, #1e90ff, #1e3c72, rgb(85, 98, 180));
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientText 7s linear infinite;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #password-input {
+            padding: 10px;
+            width: 100%;
+            background-color: rgba(70, 70, 70, 0.9);
+            color: #e0e0e0;
+            border: 2px solid #555;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            text-align: center;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        #password-input:focus {
+            border-color: #1e90ff;
+            outline: none;
+        }
+
+        #submit-password {
+            padding: 8px 20px;
+            border: none;
+            background: linear-gradient(90deg, rgb(85, 98, 180), rgb(85, 98, 180), #1e3c72, #1e90ff, #1e3c72, rgb(85, 98, 180));
+            background-size: 300% auto;
+            color: white;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-position 0.5s ease;
+            animation: gradientButton 7s linear infinite;
+            margin-bottom: 10px;
+            font-family: 'Poppins', Arial, sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes gradientButton {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #submit-password:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+    </style>
 </head>
-
-<style>
-
-body {
-
-	background-image: url('grunge_patterns.jpg');
-	background-attachment: fixed;
-	color: #333;
-}
-
-.box {
-	border-radius: 3px;
-	background: rgba(101, 101, 101, 0.7); margin: auto; padding: 12px;
-}
-
-.lightbox {
-	zoom: 1.5;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(10, 10, 10, 0.8);
-	text-align: center;
-	margin: auto;
-
-}
-
-div.horizontal {
-	display: flex;
-	justify-content: center;
-	height: 100%;
-}
-
-div.vertical {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	width: 100%;
-}
-
-::-webkit-input-placeholder {
-   color: #955;
-   text-align: center;
-}
-
-::-moz-placeholder {
-   color: #955;
-   text-align: center;
-}
-
-:-ms-input-placeholder {
-   color: #955;
-   text-align: center;
-}
-
-</style>
-
 <body>
 
-	<div id="loginbox" class="lightbox" >
-		<div class="horizontal">
-			<div class="vertical">
-				<div class="box">
-					<input style="margin: 16px; text-align: center;" id="password" type="password" placeholder="password" /> <br />
-					<button id="loginbutton" type="button">Enter</button>
-					<p id="wrongPassword" style="display: none">wrong password</p>
-				</div>
-			</div>
-		</div>
-	</div>
+<div id="password-container">
+    <h2 id="title">Enter Password</h2>
+    <input type="password" id="password-input" placeholder="password" />
+    <button id="submit-password">Enter</button>
+    <p id="wrongPassword" style="display: none; color: #ff5555;">wrong password</p>
+</div>
 
+<div id="incorrect-password-container">
+    <h2 id="incorrect-title">Password Incorrect</h2>
+    <p>Retry in <span id="countdown">5</span> seconds.</p>
+</div>
 
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://rawcdn.githack.com/chrisveness/crypto/7067ee62f18c76dd4a9d372a00e647205460b62b/sha1.js"></script>
 
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script>
+    function loadPage(pwd) {
+        var hash = Sha1.hash(pwd);
+        var url = hash + "/index.html";
 
+        $.ajax({
+            url: url,
+            dataType: "html",
+            success: function(data) {
+                window.location = url;
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                // Show incorrect password message
+                $("#password-container").hide();
+                $("#incorrect-password-container").show();
 
-	 <script type="text/javascript" src="https://rawcdn.githack.com/chrisveness/crypto/7067ee62f18c76dd4a9d372a00e647205460b62b/sha1.js"></script>
+                let countdown = 5;
+                $("#countdown").text(countdown);
 
-	<script type="text/javascript">
-	"use strict";
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    $("#countdown").text(countdown);
 
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        $("#incorrect-password-container").hide();
+                        $("#password-container").show();
+                        $("#password-input").val("").focus();
+                    }
+                }, 1000);
+            }
+        });
+    }
 
-	function loadPage(pwd) {
+    $("#submit-password").on("click", function() {
+        loadPage($("#password-input").val());
+    });
 
-		var hash= pwd;
-		hash= Sha1.hash(pwd);
-		var url= hash + "/index.html";
+    $("#password-input").keypress(function(e) {
+        if (e.which == 13) {
+            loadPage($("#password-input").val());
+        }
+    });
 
-		$.ajax({
-			url : url,
-			dataType : "html",
-			success : function(data) {
-
-				window.location= url;
-
-			},
-			error : function(xhr, ajaxOptions, thrownError) {
-
-
-				parent.location.hash= hash;
-
-				//$("#wrongPassword").show();
-				$("#password").attr("placeholder","wrong password");
-				$("#password").val("");
-			}
-		});
-	}
-
-
-	$("#loginbutton").on("click", function() {
-		loadPage($("#password").val());
-	});
-	$("#password").keypress(function(e) {
-		if (e.which == 13) {
-
-			loadPage($("#password").val());
-		}
-	});
-	$("#password").focus();
-
-	</script>
+    $("#password-input").focus();
+</script>
 
 </body>
 </html>
